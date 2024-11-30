@@ -132,6 +132,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UIControls",
+            "id": "977a80fa-9201-432e-a699-2f06a738b981",
+            "actions": [
+                {
+                    "name": "Pause Game",
+                    "type": "Button",
+                    "id": "3eb0a772-7789-4d1b-8bc8-0a7c0b682a5b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Open Tasks Panel",
+                    "type": "Button",
+                    "id": "fbb4015e-ca0f-4ae9-92fc-f1b0c04177c8",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Open Inventory Panel",
+                    "type": "Button",
+                    "id": "c7a17311-0e6c-495c-a51e-290f3faeb741",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4b60f826-1cbd-44e8-be8b-245e06eca3e6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard/Mouse",
+                    "action": "Pause Game",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b61f242-54f3-4cbf-b750-5989c820b505",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard/Mouse",
+                    "action": "Open Tasks Panel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "aab548a5-1311-4b28-a940-5e5fd22f884c",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard/Mouse",
+                    "action": "Open Inventory Panel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

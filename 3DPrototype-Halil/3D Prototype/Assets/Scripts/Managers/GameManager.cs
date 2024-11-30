@@ -4,6 +4,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     private UIManager uiManager;
+    private bool isEscapeHandled = false;
+
+
 
     public enum GameState
     {
@@ -12,9 +15,7 @@ public class GameManager : MonoBehaviour
         Paused,
         GameOver
     }
-
     public GameState currentState;
-    private bool isEscapePressed = false;
 
     private void Awake()
     {
@@ -31,17 +32,27 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Ensure UIManager reference is set
-        uiManager = FindObjectOfType<UIManager>();
-
+        uiManager = GetComponentInChildren<UIManager>();
         // If UIManager isn't found, log an error
         if (uiManager == null)
         {
             Debug.LogError("UIManager not found in the scene!");
         }
 
+        InputManager.Instance.OnPausePressed += HandlePauseToggle;
+        InputManager.Instance.OnTaskPressed += uiManager.ToggleTaskPanel;
+        InputManager.Instance.OnInventoryPressed += uiManager.ToggleInventoryPanel;
+        
         SetGameState(GameState.Playing); // Start the game in Playing state
     }
-
+    private void HandlePauseToggle()
+    {
+        if (currentState == GameState.Playing)
+            SetGameState(GameState.Paused);
+        else if(currentState==GameState.Paused)
+            SetGameState(GameState.Playing);
+    }
+  
     public void SetGameState(GameState newState)
     {
         // If state is already the same, no need to change
@@ -84,30 +95,35 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        HandleEscapeInput();
+        HandleInput();
         Debug.Log(currentState);
     }
 
-    private void HandleEscapeInput()
+    private void HandleInput()
     {
-        if (InputManager.Instance.isEscapedPressed && !isEscapePressed) // Only process if it's the first press
+        if (InputManager.Instance.isEscapedPressed)
         {
-            isEscapePressed = true; // Set flag to prevent multiple state changes in one frame
-
-            if (currentState == GameState.Playing)
+            if(!isEscapeHandled)
             {
-                SetGameState(GameState.Paused); // Pause the game
+                isEscapeHandled=true;
+                
+                if (currentState == GameState.Playing)
+                    SetGameState(GameState.Paused);
+                else if (currentState == GameState.Paused)
+                    SetGameState(GameState.Playing);
             }
-            else if (currentState == GameState.Paused)
+            else
             {
-                SetGameState(GameState.Playing); // Resume the game
+                isEscapeHandled = false;
             }
+            
         }
 
-        // Reset the escape flag when the key is released, allowing for the next press to be detected
-        if (!InputManager.Instance.isEscapedPressed)
-        {
-            isEscapePressed = false;
-        }
+        if(InputManager.Instance.isTButtonPressed) 
+            uiManager.ToggleTaskPanel();
+
+        if (InputManager.Instance.isIButtonPressed)
+            uiManager.ToggleInventoryPanel();
     }
+
 }

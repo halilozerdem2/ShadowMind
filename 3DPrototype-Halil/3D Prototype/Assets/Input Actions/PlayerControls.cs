@@ -154,6 +154,74 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""UIControls"",
+            ""id"": ""977a80fa-9201-432e-a699-2f06a738b981"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""3eb0a772-7789-4d1b-8bc8-0a7c0b682a5b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open Tasks Panel"",
+                    ""type"": ""Button"",
+                    ""id"": ""fbb4015e-ca0f-4ae9-92fc-f1b0c04177c8"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open Inventory Panel"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7a17311-0e6c-495c-a51e-290f3faeb741"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""4b60f826-1cbd-44e8-be8b-245e06eca3e6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b61f242-54f3-4cbf-b750-5989c820b505"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""Open Tasks Panel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aab548a5-1311-4b28-a940-5e5fd22f884c"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""Open Inventory Panel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -170,11 +238,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        // UIControls
+        m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
+        m_UIControls_PauseGame = m_UIControls.FindAction("Pause Game", throwIfNotFound: true);
+        m_UIControls_OpenTasksPanel = m_UIControls.FindAction("Open Tasks Panel", throwIfNotFound: true);
+        m_UIControls_OpenInventoryPanel = m_UIControls.FindAction("Open Inventory Panel", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
     {
         UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PlayerControls.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_UIControls.enabled, "This will cause a leak and performance issues, PlayerControls.UIControls.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -302,6 +376,68 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // UIControls
+    private readonly InputActionMap m_UIControls;
+    private List<IUIControlsActions> m_UIControlsActionsCallbackInterfaces = new List<IUIControlsActions>();
+    private readonly InputAction m_UIControls_PauseGame;
+    private readonly InputAction m_UIControls_OpenTasksPanel;
+    private readonly InputAction m_UIControls_OpenInventoryPanel;
+    public struct UIControlsActions
+    {
+        private @PlayerControls m_Wrapper;
+        public UIControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseGame => m_Wrapper.m_UIControls_PauseGame;
+        public InputAction @OpenTasksPanel => m_Wrapper.m_UIControls_OpenTasksPanel;
+        public InputAction @OpenInventoryPanel => m_Wrapper.m_UIControls_OpenInventoryPanel;
+        public InputActionMap Get() { return m_Wrapper.m_UIControls; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIControlsActions set) { return set.Get(); }
+        public void AddCallbacks(IUIControlsActions instance)
+        {
+            if (instance == null || m_Wrapper.m_UIControlsActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_UIControlsActionsCallbackInterfaces.Add(instance);
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
+            @OpenTasksPanel.started += instance.OnOpenTasksPanel;
+            @OpenTasksPanel.performed += instance.OnOpenTasksPanel;
+            @OpenTasksPanel.canceled += instance.OnOpenTasksPanel;
+            @OpenInventoryPanel.started += instance.OnOpenInventoryPanel;
+            @OpenInventoryPanel.performed += instance.OnOpenInventoryPanel;
+            @OpenInventoryPanel.canceled += instance.OnOpenInventoryPanel;
+        }
+
+        private void UnregisterCallbacks(IUIControlsActions instance)
+        {
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
+            @OpenTasksPanel.started -= instance.OnOpenTasksPanel;
+            @OpenTasksPanel.performed -= instance.OnOpenTasksPanel;
+            @OpenTasksPanel.canceled -= instance.OnOpenTasksPanel;
+            @OpenInventoryPanel.started -= instance.OnOpenInventoryPanel;
+            @OpenInventoryPanel.performed -= instance.OnOpenInventoryPanel;
+            @OpenInventoryPanel.canceled -= instance.OnOpenInventoryPanel;
+        }
+
+        public void RemoveCallbacks(IUIControlsActions instance)
+        {
+            if (m_Wrapper.m_UIControlsActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IUIControlsActions instance)
+        {
+            foreach (var item in m_Wrapper.m_UIControlsActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_UIControlsActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public UIControlsActions @UIControls => new UIControlsActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -317,5 +453,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+    }
+    public interface IUIControlsActions
+    {
+        void OnPauseGame(InputAction.CallbackContext context);
+        void OnOpenTasksPanel(InputAction.CallbackContext context);
+        void OnOpenInventoryPanel(InputAction.CallbackContext context);
     }
 }
