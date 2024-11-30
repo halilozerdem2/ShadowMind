@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
 
     private PlayerControls playerControls;
     private UIControls uiControls;
+    //private PlayerInteraction playerIns;
 
     //public delegate void InputActionHandler();
     public event System.Action OnPausePressed;
@@ -19,7 +20,8 @@ public class InputManager : MonoBehaviour
     public bool JumpInput { get; private set; }
     public bool RunInput { get; private set; }
 
-    public bool isEscapedPressed, isIButtonPressed, isTButtonPressed;
+    public bool isEscapedPressed, isIButtonPressed, isTButtonPressed,isEButtonPressed;
+    public bool isInteracting;
     public bool IsInputEnabled { get; private set; } = true;
 
     private void Awake()
@@ -54,14 +56,9 @@ public class InputManager : MonoBehaviour
         uiControls.UI.PauseGame.performed += ctx => OnPausePressed?.Invoke();
         uiControls.UI.OpenTasksPanel.performed += ctx => OnTaskPressed?.Invoke();
         uiControls.UI.OpenInventoryPanel.performed += ctx => OnInventoryPressed?.Invoke();
-        //uiControls.UI.PauseGame.performed += ctx => isEscapedPressed = true;
-        //uiControls.UI.PauseGame.canceled += ctx => isEscapedPressed = false;
-        
-        //uiControls.UI.OpenTasksPanel.performed += ctx => isTButtonPressed = true;
-        //uiControls.UI.OpenTasksPanel.canceled += ctx => isTButtonPressed = false;
 
-        //uiControls.UI.OpenInventoryPanel.performed += ctx => isIButtonPressed = true;
-        //uiControls.UI.OpenInventoryPanel.canceled += ctx => isIButtonPressed = false;
+        // Player Interactions
+        //playerIns =new PlayerInteraction();
 
     }
 
@@ -69,12 +66,15 @@ public class InputManager : MonoBehaviour
     {
         playerControls.Enable();
         uiControls.Enable();
+
+ 
     }
 
     private void OnDisable()
     {
         playerControls.Disable();
         uiControls.Disable();
+
     }
 
     public void EnablePlayerInput()
@@ -91,6 +91,24 @@ public class InputManager : MonoBehaviour
         JumpInput = false;
         RunInput = false;
         playerControls.Disable();
+    }
+
+
+   public bool returnEButtonValue()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+            return true;
+        
+        return false;
+    }
+
+    public bool returnQButtonValue()
+    {
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            return true;
+        }
+        return false;
     }
 
 }

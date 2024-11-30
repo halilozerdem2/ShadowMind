@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private bool isEscapeHandled = false;
 
-
-
     public enum GameState
     {
         MainMenu,
@@ -96,7 +94,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         HandleInput();
-        Debug.Log(currentState);
     }
 
     private void HandleInput()

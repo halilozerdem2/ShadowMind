@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
         if (InputManager.Instance.JumpInput && IsGrounded())
         {
-            rb.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 1f, ForceMode.Impulse);
         }
     }
 
