@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
@@ -11,19 +11,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public float lookSensitivity = 2f;
     [SerializeField] private float cameraPitch = 0f;
 
-    private Rigidbody rb;
+    private CharacterController controller;
     private Transform playerCamera;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        controller = GetComponent<CharacterController>();
         playerCamera = Camera.main.transform;
-
-        rb.freezeRotation = true;
     }
 
     private void Update()
     {
+        // Kamera döndürme iþlemi
         Vector2 lookInput = InputManager.Instance.LookInput;
         float mouseX = lookInput.x * lookSensitivity;
         float mouseY = lookInput.y * lookSensitivity;
@@ -37,23 +36,16 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // Hareket iþlemleri
         Vector2 moveInput = InputManager.Instance.MoveInput;
-        bool isRunning = InputManager.Instance.RunInput; 
+        bool isRunning = InputManager.Instance.RunInput;
 
-        float currentSpeed = isRunning ? runningSpeed : moveSpeed; 
+        float currentSpeed = isRunning ? runningSpeed : moveSpeed;
         Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y);
+
         Vector3 velocity = transform.TransformDirection(moveDirection) * currentSpeed;
+        velocity.y = Physics.gravity.y;
+        controller.Move(velocity * Time.deltaTime);
 
-        rb.linearVelocity = new Vector3(velocity.x, rb.linearVelocity.y, velocity.z);
-
-        if (InputManager.Instance.JumpInput && IsGrounded())
-        {
-            rb.AddForce(Vector3.up * 1f, ForceMode.Impulse);
-        }
-    }
-
-    private bool IsGrounded()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, 1.1f);
     }
 }

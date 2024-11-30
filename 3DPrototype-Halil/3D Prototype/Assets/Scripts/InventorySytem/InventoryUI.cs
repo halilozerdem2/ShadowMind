@@ -21,7 +21,6 @@ public class InventoryUI : MonoBehaviour
         {
             GameObject itemUI = Instantiate(itemTemplatePrefab, contentParent);
 
-            // UI elemanlarýný doldur
             var iconImage = itemUI.transform.Find("Icon").GetComponent<Image>();
             iconImage.sprite = item.Icon;
 

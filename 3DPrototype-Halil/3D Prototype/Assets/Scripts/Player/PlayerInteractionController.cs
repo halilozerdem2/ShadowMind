@@ -47,13 +47,8 @@ public class PlayerInteractionController : MonoBehaviour
 
         if (objectGrabbable.TryGetComponent(out ItemData itemData))
         {
-            // Envantere ekle
             Inventory.items.Add(itemData.item);
-
-            // Objeyi yok et
             Destroy(objectGrabbable.gameObject);
-
-            // Referansý sýfýrla
             objectGrabbable = null;
         }
         else

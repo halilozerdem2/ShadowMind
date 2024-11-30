@@ -8,9 +8,7 @@ public class InputManager : MonoBehaviour
 
     private PlayerControls playerControls;
     private UIControls uiControls;
-    //private PlayerInteraction playerIns;
 
-    //public delegate void InputActionHandler();
     public event System.Action OnPausePressed;
     public event System.Action OnTaskPressed;
     public event System.Action OnInventoryPressed;
@@ -33,9 +31,7 @@ public class InputManager : MonoBehaviour
         }
 
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
 
-        //Player Actions
         playerControls = new PlayerControls();
 
         playerControls.Player.Move.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
@@ -44,21 +40,15 @@ public class InputManager : MonoBehaviour
         playerControls.Player.Look.performed += ctx => LookInput = ctx.ReadValue<Vector2>();
         playerControls.Player.Look.canceled += ctx => LookInput = Vector2.zero;
 
-        playerControls.Player.Jump.performed += ctx => JumpInput = true;
-        playerControls.Player.Jump.canceled += ctx => JumpInput = false;
-
         playerControls.Player.Run.performed += ctx => RunInput = true;
         playerControls.Player.Run.canceled += ctx => RunInput = false;
 
-        //UI Controls
+
         uiControls = new UIControls();
 
         uiControls.UI.PauseGame.performed += ctx => OnPausePressed?.Invoke();
         uiControls.UI.OpenTasksPanel.performed += ctx => OnTaskPressed?.Invoke();
         uiControls.UI.OpenInventoryPanel.performed += ctx => OnInventoryPressed?.Invoke();
-
-        // Player Interactions
-        //playerIns =new PlayerInteraction();
 
     }
 
@@ -66,8 +56,6 @@ public class InputManager : MonoBehaviour
     {
         playerControls.Enable();
         uiControls.Enable();
-
- 
     }
 
     private void OnDisable()
