@@ -3,66 +3,62 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     [Header("Kapý Ayarlarý")]
-    [SerializeField] private float openDistance = 3f;  // Kapý açýlma mesafesi
-    [SerializeField] private float openSpeed = 2f;     // Kapý açýlma hýzý
-    [SerializeField] private float maxOpenAngle = 90f; // Kapýnýn açýlacaðý maksimum açý
+    [SerializeField] private float openSpeed = 2f;       // Kapý açýlma hýzý
+    [SerializeField] private float openAngle = 90f;     // Kapýnýn açýlacaðý z eksenindeki açý
 
-    private bool isPlayerNear = false;   // Oyuncu kapýya yaklaþtýðýnda kontrol
-    private bool isDoorOpen = false;     // Kapý açýk mý?
-
-    private Transform player; // Oyuncu referansý
-    private float closedRotationZ;  // Kapýnýn kapalý hali Z rotasyonu
-    private float openRotationZ;    // Kapýnýn açýk hali Z rotasyonu
+    private Vector3 closedRotation;  // Kapýnýn kapalý pozisyondaki rotasyonu
+    private Vector3 targetRotation;  // Kapýnýn hedef rotasyonu
+    private bool isPlayerNear = false; // Oyuncu kapýya yaklaþtýðýnda kontrol
+    private bool isDoorOpen = false;  // Kapý açýk mý?
 
     private void Start()
     {
-        closedRotationZ = transform.rotation.eulerAngles.z; // Kapý baþlangýçta kapalý
-        openRotationZ = closedRotationZ + maxOpenAngle; // Kapý saða açýlacak (z ekseninde)
-        player = Camera.main.transform; // Oyuncu kamerayý kullanýyoruz
+        // Kapýnýn baþlangýçtaki rotasyonunu kaydet
+        closedRotation = transform.rotation.eulerAngles;
+
+        // Baþlangýçta kapýyý kapalý pozisyona ayarla
+        targetRotation = closedRotation;
+        transform.rotation = Quaternion.Euler(closedRotation);
     }
 
     private void Update()
     {
-        // Eðer oyuncu kapýya yakýnsa, kapýyý açmaya baþla
+        // Eðer oyuncu kapýya yaklaþtýysa ve kapý kapalýysa aç
         if (isPlayerNear && !isDoorOpen)
         {
             OpenDoor();
         }
+        // Eðer oyuncu uzaklaþtýysa ve kapý açýksa kapat
         else if (!isPlayerNear && isDoorOpen)
         {
             CloseDoor();
         }
+
+        // Kapýyý hedef rotasyona doðru hareket ettir
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            Quaternion.Euler(targetRotation),
+            openSpeed * Time.deltaTime * 100f
+        );
     }
 
     private void OpenDoor()
     {
-        // Kapýyý z ekseninde yavaþça açýyoruz
-        float currentRotationZ = Mathf.LerpAngle(transform.rotation.eulerAngles.z, openRotationZ, Time.deltaTime * openSpeed);
-        transform.rotation = Quaternion.Euler(0, 0, currentRotationZ);
-
-        // Kapý tam açýldýðýnda durur
-        if (Mathf.Abs(transform.rotation.eulerAngles.z - openRotationZ) < 1f)
-        {
-            isDoorOpen = true;
-        }
+        // Kapýyý açýk hale getir, sadece z ekseninde deðiþiklik yap
+        targetRotation = new Vector3(closedRotation.x, closedRotation.y, closedRotation.z - openAngle);
+        isDoorOpen = true;
     }
 
     private void CloseDoor()
     {
-        // Kapýyý z ekseninde yavaþça kapatýyoruz
-        float currentRotationZ = Mathf.LerpAngle(transform.rotation.eulerAngles.z, closedRotationZ, Time.deltaTime * openSpeed);
-        transform.rotation = Quaternion.Euler(90,0, currentRotationZ);
-        
-        // Kapý tam kapandýðýnda durur
-        if (Mathf.Abs(transform.rotation.eulerAngles.z - closedRotationZ) < 1f)
-        {
-            isDoorOpen = false;
-        }
+        // Kapýyý kapalý hale getir, ilk rotasyona geri dön
+        targetRotation = closedRotation;
+        isDoorOpen = false;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Eðer oyuncu kapýya yaklaþýrsa
+        if (other.CompareTag("Player")) // Oyuncu kapýya yaklaþýrsa
         {
             isPlayerNear = true;
         }
@@ -70,7 +66,7 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) // Eðer oyuncu kapýdan uzaklaþýrsa
+        if (other.CompareTag("Player")) // Oyuncu kapýdan uzaklaþýrsa
         {
             isPlayerNear = false;
         }
