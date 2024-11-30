@@ -1,38 +1,46 @@
+using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ButtonHandler : MonoBehaviour
+public class ButtonManager : MonoBehaviour
 {
-    public GameObject tasksPanel;
-    public GameObject inventoryPanel;
-
+    public GameObject canvasControls;
+    public GameObject settingsPanel;
+    public GameObject pauseMenu;
+    
+    //PauseMenuButtonControls
     public void Continue()
     {
         GameManager.Instance.SetGameState(GameManager.GameState.Playing);
     }
-    public void OpenAndCloseTasksPanel()
-    {
-        tasksPanel?.SetActive(!tasksPanel.gameObject.activeSelf);
+    public void OpenControlsPanel()
+    {   
+        canvasControls.SetActive(true);
+        pauseMenu.SetActive(false);
     }
-
-    public void OpenAndCloseInventoryPanel()
-    {
-        inventoryPanel?.SetActive(!inventoryPanel.gameObject.activeSelf);
-    }
-
-   public void MainMenu()
+    public void MainMenu()
     {
         StartCoroutine(LoadSceneCoroutine("MainMenu"));
     }
     public void Settings()
     {
+        bool isActive = settingsPanel.activeSelf;
+        settingsPanel.SetActive(!isActive);
 
     }
     public void Quit()
     {
         Application.Quit();
     }
+
+   //CtonrolPanelButtonControls
+   public void BackToPausePanel()
+    {
+        canvasControls.gameObject.SetActive(false);
+        pauseMenu.SetActive(true);
+    }
+
 
     IEnumerator LoadSceneCoroutine(string sceneName)
     {

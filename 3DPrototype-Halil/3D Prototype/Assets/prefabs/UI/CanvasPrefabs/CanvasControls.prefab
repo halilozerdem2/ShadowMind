@@ -142,7 +142,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Close
+  m_text: 'Back
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -385,7 +387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 731, y: 402}
+  m_AnchoredPosition: {x: 657, y: -328}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6151190393895373263
@@ -1185,7 +1187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -12.7582, y: 0}
+  m_AnchoredPosition: {x: -12.758179, y: 0}
   m_SizeDelta: {x: -382.7444, y: -238.152}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8035316687418643078
@@ -1238,9 +1240,10 @@ GameObject:
   - component: {fileID: 7100449724296924822}
   - component: {fileID: 3352907200539885568}
   - component: {fileID: 3587420715846133043}
+  - component: {fileID: 9181386708122369557}
   m_Layer: 5
   m_Name: CanvasControls
-  m_TagString: Untagged
+  m_TagString: Controls
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1329,6 +1332,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &9181386708122369557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5295831730060626867}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dfe7f81484808b4ea818bc6770b5d8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasControls: {fileID: 5295831730060626867}
+  settingsPanel: {fileID: 0}
 --- !u!1 &5609868918196715239
 GameObject:
   m_ObjectHideFlags: 0

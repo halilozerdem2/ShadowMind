@@ -759,11 +759,11 @@ GameObject:
   - component: {fileID: 355794789555296450}
   m_Layer: 5
   m_Name: CanvasTasks
-  m_TagString: Untagged
+  m_TagString: Tasks
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4127317862734419288
 RectTransform:
   m_ObjectHideFlags: 0
