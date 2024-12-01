@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
@@ -8,7 +9,7 @@ public class ButtonManager : MonoBehaviour
     public GameObject canvasControls;
     public GameObject settingsPanel;
     public GameObject pauseMenu;
-    
+
     //PauseMenuButtonControls
     public void Continue()
     {
@@ -21,7 +22,8 @@ public class ButtonManager : MonoBehaviour
     }
     public void MainMenu()
     {
-        StartCoroutine(LoadSceneCoroutine("MainMenu"));
+        GameManager.Instance.SetGameState(GameManager.GameState.MainMenu);
+        
     }
     public void Settings()
     {
@@ -41,14 +43,5 @@ public class ButtonManager : MonoBehaviour
         pauseMenu.SetActive(true);
     }
 
-
-    IEnumerator LoadSceneCoroutine(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        while (!asyncLoad.isDone)
-        {
-            // Yükleniyor...
-            yield return null;
-        }
-    }
+    
 }

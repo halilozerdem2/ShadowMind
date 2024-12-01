@@ -1,10 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     private UIManager uiManager;
+    private SceneLoader loader;
     private bool isEscapeHandled = false;
+
 
     public enum GameState
     {
@@ -25,6 +30,7 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        loader=GetComponent<SceneLoader>();
     }
 
     private void Start()
@@ -40,17 +46,17 @@ public class GameManager : MonoBehaviour
         InputManager.Instance.OnPausePressed += HandlePauseToggle;
         InputManager.Instance.OnTaskPressed += uiManager.ToggleTaskPanel;
         InputManager.Instance.OnInventoryPressed += uiManager.ToggleInventoryPanel;
-        
-        SetGameState(GameState.Playing); // Start the game in Playing state
+
+        SetGameState(GameState.MainMenu); // Start the game in Mainmenu state
     }
     private void HandlePauseToggle()
     {
         if (currentState == GameState.Playing)
             SetGameState(GameState.Paused);
-        else if(currentState==GameState.Paused)
+        else if (currentState == GameState.Paused)
             SetGameState(GameState.Playing);
     }
-  
+
     public void SetGameState(GameState newState)
     {
         // If state is already the same, no need to change
@@ -66,11 +72,21 @@ public class GameManager : MonoBehaviour
         switch (currentState)
         {
             case GameState.MainMenu:
-                // Load the main menu scene (or activate main menu UI)
+                if (loader.currentScene.name != "MainMenu")
+                {
+                    SceneLoaderFunction("MainMenu");
+                }
+                uiManager.HidePauseMenu();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                InputManager.Instance.DisablePlayerInput();
+                Time.timeScale = 0f;
                 break;
 
             case GameState.Playing:
+                SceneLoaderFunction("Morning");
                 InputManager.Instance.EnablePlayerInput();
+                InputManager.Instance.EnableUIInputs();
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Time.timeScale = 1f;
@@ -81,12 +97,20 @@ public class GameManager : MonoBehaviour
                 uiManager.ShowPauseMenu(); // Show the pause menu
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                InputManager.Instance.DisablePlayerInput(); // Disable player controls
+                InputManager.Instance.DisablePlayerInput();
+                InputManager.Instance.DisableUIInputs(); 
                 Time.timeScale = 0f; // Freeze time in the game
                 break;
 
             case GameState.GameOver:
-                // Handle game over logic (e.g., show game over screen)
+                if (loader.currentScene.name != "GameOver")
+                    StartCoroutine("GameOver");
+
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                InputManager.Instance.DisablePlayerInput();
+                InputManager.Instance.DisableUIInputs();
+                Time.timeScale = 0f;
                 break;
         }
     }
@@ -100,10 +124,10 @@ public class GameManager : MonoBehaviour
     {
         if (InputManager.Instance.isEscapedPressed)
         {
-            if(!isEscapeHandled)
+            if (!isEscapeHandled)
             {
-                isEscapeHandled=true;
-                
+                isEscapeHandled = true;
+
                 if (currentState == GameState.Playing)
                     SetGameState(GameState.Paused);
                 else if (currentState == GameState.Paused)
@@ -113,14 +137,21 @@ public class GameManager : MonoBehaviour
             {
                 isEscapeHandled = false;
             }
-            
+
         }
 
-        if(InputManager.Instance.isTButtonPressed) 
+        if (InputManager.Instance.isTButtonPressed)
             uiManager.ToggleTaskPanel();
 
         if (InputManager.Instance.isIButtonPressed)
             uiManager.ToggleInventoryPanel();
+    }
+
+
+    public void SceneLoaderFunction(string sceneName)
+    {
+        // Belirtilen sahneyi yükler
+        SceneManager.LoadScene(sceneName);
     }
 
 }

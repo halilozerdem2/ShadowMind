@@ -65,6 +65,15 @@ public class InputManager : MonoBehaviour
 
     }
 
+    public void EnableUIInputs()
+    {
+        uiControls.Enable();
+    }
+    public void DisableUIInputs() 
+    {
+        uiControls.Disable();
+    }
+
     public void EnablePlayerInput()
     {
         IsInputEnabled = true;
