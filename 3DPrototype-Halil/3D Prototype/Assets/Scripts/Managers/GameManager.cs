@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private SceneLoader loader;
     private bool isEscapeHandled = false;
+    public TaskManager taskManager;
+    public AudioManager audioManager;
 
 
     public enum GameState
     {
         MainMenu,
-        Playing,
+        PlayingMorningScene,
+        PlayingNightScene,
         Paused,
         GameOver
     }
@@ -30,7 +33,9 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        loader=GetComponent<SceneLoader>();
+        loader = GetComponent<SceneLoader>();
+        taskManager=FindAnyObjectByType<TaskManager>();
+        audioManager=FindAnyObjectByType<AudioManager>();
     }
 
     private void Start()
@@ -51,10 +56,10 @@ public class GameManager : MonoBehaviour
     }
     private void HandlePauseToggle()
     {
-        if (currentState == GameState.Playing)
+        if (currentState == GameState.PlayingMorningScene)
             SetGameState(GameState.Paused);
         else if (currentState == GameState.Paused)
-            SetGameState(GameState.Playing);
+            SetGameState(GameState.PlayingMorningScene);
     }
 
     public void SetGameState(GameState newState)
@@ -74,37 +79,64 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu:
                 if (loader.currentScene.name != "MainMenu")
                 {
-                    SceneLoaderFunction("MainMenu");
+                    StartCoroutine(LoadSceneCoroutine("MainMenu"));
                 }
+                audioManager.PlayMusicForScene("MainMenu");
                 uiManager.HidePauseMenu();
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 InputManager.Instance.DisablePlayerInput();
+                InputManager.Instance.DisableUIInputs();
                 Time.timeScale = 0f;
                 break;
 
-            case GameState.Playing:
-                SceneLoaderFunction("Morning");
+            case GameState.PlayingMorningScene:
+                if (loader.currentScene.name != "Morning")
+                {
+                    StartCoroutine(LoadSceneCoroutine("Morning"));
+                }
                 InputManager.Instance.EnablePlayerInput();
                 InputManager.Instance.EnableUIInputs();
+                taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynýra at"));
+                taskManager.AddTask(new Task ("Anahtar teslim", "Evinin karþýsýndaki binada oturan komþuna anahtarý götür"));
+                taskManager.AddTask(new Task ("Gazete Oku", "Evdeki gazeteyi bul ve salona býrak"));
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Time.timeScale = 1f;
                 uiManager.HidePauseMenu(); // Hide the pause menu if it's visible
                 break;
 
+            case GameState.PlayingNightScene:
+                if (loader.currentScene.name != "Night")
+                {
+                    StartCoroutine(LoadSceneCoroutine("Night"));
+                }
+                InputManager.Instance.EnablePlayerInput();
+                InputManager.Instance.EnableUIInputs();
+                taskManager.AddTask(new Task("Antidepresan zamaný ", "Evdeki ilaçlarýný bul ve kullan Q ya basarak kullan"));
+                taskManager.AddTask(new Task ("Çöp at ?", "Çöpü çýkarmamýþ mýydýn ??"));
+                taskManager.AddTask(new Task ("Çatý!! ", "Çatý katýna git ve sonunu bekle"));
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                Time.timeScale = 1f;
+                uiManager.HidePauseMenu();
+                break;
+
             case GameState.Paused:
+
                 uiManager.ShowPauseMenu(); // Show the pause menu
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 InputManager.Instance.DisablePlayerInput();
-                InputManager.Instance.DisableUIInputs(); 
+                InputManager.Instance.DisableUIInputs();
                 Time.timeScale = 0f; // Freeze time in the game
                 break;
 
             case GameState.GameOver:
                 if (loader.currentScene.name != "GameOver")
-                    StartCoroutine("GameOver");
+                {
+                    StartCoroutine(LoadSceneCoroutine("GameOver"));
+                }
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -128,18 +160,16 @@ public class GameManager : MonoBehaviour
             {
                 isEscapeHandled = true;
 
-                if (currentState == GameState.Playing)
+                if (currentState == GameState.PlayingMorningScene)
                     SetGameState(GameState.Paused);
                 else if (currentState == GameState.Paused)
-                    SetGameState(GameState.Playing);
+                    SetGameState(GameState.PlayingMorningScene);
             }
             else
             {
                 isEscapeHandled = false;
             }
-
         }
-
         if (InputManager.Instance.isTButtonPressed)
             uiManager.ToggleTaskPanel();
 
@@ -147,11 +177,24 @@ public class GameManager : MonoBehaviour
             uiManager.ToggleInventoryPanel();
     }
 
-
-    public void SceneLoaderFunction(string sceneName)
+    private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        // Belirtilen sahneyi yükler
-        SceneManager.LoadScene(sceneName);
+        // Asenkron sahne yükleme
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        asyncLoad.allowSceneActivation = false; // Sahnenin hemen aktif olmasýný engelle
+
+        // Sahne yüklenene kadar bekle
+        while (!asyncLoad.isDone)
+        {
+            // Eðer sahne %90 yüklendiyse, hemen aktif hale getir
+            if (asyncLoad.progress >= 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+
+            // Yükleme sýrasýnda baþka iþlemler de yapabilirsiniz (progress bar vs.)
+            yield return null;
+        }
     }
 
 }

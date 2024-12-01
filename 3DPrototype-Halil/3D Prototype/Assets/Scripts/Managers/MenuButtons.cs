@@ -4,6 +4,6 @@ public class MenuButtons : MonoBehaviour
 {
   public void play()
     {
-        GameManager.Instance.SetGameState(GameManager.GameState.Playing);
+        GameManager.Instance.SetGameState(GameManager.GameState.PlayingMorningScene);
     }
 }

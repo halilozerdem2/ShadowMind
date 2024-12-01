@@ -14,9 +14,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Night.unity
     guid: cda70cabfa6e8f244835d74fe6fa3b78
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Polygon.unity
     guid: e81f570f69951fc44a1c0d0d4ceae7a5
+  - enabled: 1
+    path: Assets/Scenes/GamOver.unity
+    guid: 17f809fa00426b24f9d925160af754f7
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9eb07e2d669e9c94e9d7d3c782a916f7,
       type: 2}

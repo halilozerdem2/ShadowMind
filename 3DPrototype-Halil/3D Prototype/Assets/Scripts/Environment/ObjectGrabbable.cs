@@ -5,13 +5,13 @@ public class ObjectGrabbable : MonoBehaviour
 {
     private Rigidbody rb;
     private Transform objectGrapPointTransform;
-    private BoxCollider boxCollider;
+    private MeshCollider boxCollider;
 
     private float lerpSpeed = 10f;
     private void Awake()
     {
         rb=GetComponent<Rigidbody>();
-        boxCollider = GetComponent<BoxCollider>();
+        boxCollider = GetComponent<MeshCollider>();
     }
     public void Grab(Transform objectGrappPoint)
     {

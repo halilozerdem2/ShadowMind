@@ -7,7 +7,8 @@ public class SceneLoader : MonoBehaviour
     public Scene currentScene;
     private void Update()
     {
-        currentScene=SceneManager.GetActiveScene();
+        currentScene = SceneManager.GetActiveScene();
     }
 
+    
 }

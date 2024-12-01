@@ -13,7 +13,7 @@ public class ButtonManager : MonoBehaviour
     //PauseMenuButtonControls
     public void Continue()
     {
-        GameManager.Instance.SetGameState(GameManager.GameState.Playing);
+        GameManager.Instance.SetGameState(GameManager.GameState.PlayingMorningScene);
     }
     public void OpenControlsPanel()
     {   
