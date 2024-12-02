@@ -3685,7 +3685,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -4625,7 +4625,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -5008,7 +5008,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -17941,26 +17941,26 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1082361005}
-    - targetCorrespondingSourceObject: {fileID: 6613830852188240051, guid: 1a6956da35a33ae44a2e019c5ac16703,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2061973416}
     - targetCorrespondingSourceObject: {fileID: 8770731220036050110, guid: 1a6956da35a33ae44a2e019c5ac16703,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1106315438}
+    - targetCorrespondingSourceObject: {fileID: 6613830852188240051, guid: 1a6956da35a33ae44a2e019c5ac16703,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2061973416}
     - targetCorrespondingSourceObject: {fileID: 5775527563847320588, guid: 1a6956da35a33ae44a2e019c5ac16703,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 986490845}
-    - targetCorrespondingSourceObject: {fileID: 2509198801921118121, guid: 1a6956da35a33ae44a2e019c5ac16703,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1670068923}
     - targetCorrespondingSourceObject: {fileID: 7812613759988430037, guid: 1a6956da35a33ae44a2e019c5ac16703,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2071468722}
+    - targetCorrespondingSourceObject: {fileID: 2509198801921118121, guid: 1a6956da35a33ae44a2e019c5ac16703,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1670068923}
     - targetCorrespondingSourceObject: {fileID: 4061261237489610284, guid: 1a6956da35a33ae44a2e019c5ac16703,
         type: 3}
       insertIndex: -1
