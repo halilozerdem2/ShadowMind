@@ -10,7 +10,7 @@ public class TaskUI : MonoBehaviour
 
     private void Start()
     {
-        taskManager = FindObjectOfType<TaskManager>();
+        taskManager = FindAnyObjectByType<TaskManager>();
         UpdateTaskDisplay();
     }
     private void OnEnable()
@@ -28,7 +28,7 @@ public class TaskUI : MonoBehaviour
         }
         else
         {
-            taskTitle.text = "Tüm görevler tamamlandý!";
+            taskTitle.text = "Tï¿½m gï¿½revler tamamlandï¿½!";
         }
     }
 

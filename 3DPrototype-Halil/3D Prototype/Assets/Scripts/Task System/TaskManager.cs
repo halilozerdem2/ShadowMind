@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
-    public List<Task> Tasks { get; private set; }
+    public List<Task> Tasks;
     private int currentTaskIndex = 0;
 
     private void Awake()

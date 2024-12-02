@@ -1,8 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+
     [Header("Movement Settings")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float runningSpeed = 7f;
@@ -16,13 +19,20 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        
+         if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
         controller = GetComponent<CharacterController>();
         playerCamera = Camera.main.transform;
     }
 
     private void Update()
     {
-        // Kamera döndürme iþlemi
+        // Kamera dï¿½ndï¿½rme iï¿½lemi
         Vector2 lookInput = InputManager.Instance.LookInput;
         float mouseX = lookInput.x * lookSensitivity;
         float mouseY = lookInput.y * lookSensitivity;
@@ -36,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // Hareket iþlemleri
+        // Hareket iï¿½lemleri
         Vector2 moveInput = InputManager.Instance.MoveInput;
         bool isRunning = InputManager.Instance.RunInput;
 

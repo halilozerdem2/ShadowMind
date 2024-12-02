@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private SceneLoader loader;
     private bool isEscapeHandled = false;
     public TaskManager taskManager;
-    public AudioManager audioManager;
+
 
 
     public enum GameState
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         loader = GetComponent<SceneLoader>();
         taskManager=FindAnyObjectByType<TaskManager>();
-        audioManager=FindAnyObjectByType<AudioManager>();
+
     }
 
     private void Start()
@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour
                 {
                     StartCoroutine(LoadSceneCoroutine("MainMenu"));
                 }
-                audioManager.PlayMusicForScene("MainMenu");
                 uiManager.HidePauseMenu();
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
@@ -97,9 +96,9 @@ public class GameManager : MonoBehaviour
                 }
                 InputManager.Instance.EnablePlayerInput();
                 InputManager.Instance.EnableUIInputs();
-                taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynýra at"));
-                taskManager.AddTask(new Task ("Anahtar teslim", "Evinin karþýsýndaki binada oturan komþuna anahtarý götür"));
-                taskManager.AddTask(new Task ("Gazete Oku", "Evdeki gazeteyi bul ve salona býrak"));
+                taskManager.AddTask(new Task("Ã‡Ã¶p At", "Alt kattaki Ã§Ã¶pÃ¼ bul ve konteynÄ±ra at"));
+                //taskManager.AddTask(new Task ("Anahtar teslim", "AnahtarÄ± bul ve evinin karÅŸÄ±sÄ±ndaki binada oturan komÅŸuna gÃ¶tÃ¼r"));
+                //taskManager.AddTask(new Task ("Gazete Oku", "Evdeki gazeteyi bul ve salona bÄ±rak"));
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Time.timeScale = 1f;
@@ -113,9 +112,9 @@ public class GameManager : MonoBehaviour
                 }
                 InputManager.Instance.EnablePlayerInput();
                 InputManager.Instance.EnableUIInputs();
-                taskManager.AddTask(new Task("Antidepresan zamaný ", "Evdeki ilaçlarýný bul ve kullan Q ya basarak kullan"));
-                taskManager.AddTask(new Task ("Çöp at ?", "Çöpü çýkarmamýþ mýydýn ??"));
-                taskManager.AddTask(new Task ("Çatý!! ", "Çatý katýna git ve sonunu bekle"));
+                taskManager.AddTask(new Task("Antidepresan zamanÄ±", "Evdeki ilaÃ§larÄ±nÄ± bul ve Q ya basarak kullan"));
+                //taskManager.AddTask(new Task ("ï¿½ï¿½p at ?", "ï¿½ï¿½pï¿½ ï¿½ï¿½karmamï¿½ï¿½ mï¿½ydï¿½n ??"));
+                //StaskManager.AddTask(new Task ("ï¿½atï¿½!! ", "ï¿½atï¿½ katï¿½na git ve sonunu bekle"));
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Time.timeScale = 1f;
@@ -179,20 +178,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadSceneCoroutine(string sceneName)
     {
-        // Asenkron sahne yükleme
+        // Asenkron sahne yï¿½kleme
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        asyncLoad.allowSceneActivation = false; // Sahnenin hemen aktif olmasýný engelle
+        asyncLoad.allowSceneActivation = false; // Sahnenin hemen aktif olmasï¿½nï¿½ engelle
 
-        // Sahne yüklenene kadar bekle
+        // Sahne yï¿½klenene kadar bekle
         while (!asyncLoad.isDone)
         {
-            // Eðer sahne %90 yüklendiyse, hemen aktif hale getir
+            // Eï¿½er sahne %90 yï¿½klendiyse, hemen aktif hale getir
             if (asyncLoad.progress >= 0.9f)
             {
                 asyncLoad.allowSceneActivation = true;
             }
 
-            // Yükleme sýrasýnda baþka iþlemler de yapabilirsiniz (progress bar vs.)
+            // Yï¿½kleme sï¿½rasï¿½nda baï¿½ka iï¿½lemler de yapabilirsiniz (progress bar vs.)
             yield return null;
         }
     }
