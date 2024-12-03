@@ -32,7 +32,7 @@ public class TaskManager : MonoBehaviour
 
         if (currentTaskIndex >= Tasks.Count)
         {
-            GameManager.Instance.SetGameState(GameManager.GameState.PlayingNightScene);
+           GameManager.Instance.LoadScene("Night");
         }
     }
 }

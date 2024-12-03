@@ -6,12 +6,11 @@ public class TaskUI : MonoBehaviour
     public TextMeshProUGUI taskTitle;
     public TextMeshProUGUI taskDescription;
 
-    private TaskManager taskManager;
+    public TaskManager taskManager;
 
     private void Start()
     {
         taskManager = FindAnyObjectByType<TaskManager>();
-        UpdateTaskDisplay();
     }
     private void OnEnable()
     {
@@ -20,6 +19,8 @@ public class TaskUI : MonoBehaviour
 
     public void UpdateTaskDisplay()
     {
+        taskManager = FindAnyObjectByType<TaskManager>();
+        
         Task currentTask = taskManager.GetCurrentTask();
         if (currentTask != null)
         {
@@ -28,7 +29,7 @@ public class TaskUI : MonoBehaviour
         }
         else
         {
-            taskTitle.text = "T�m g�revler tamamland�!";
+            taskTitle.text = "Son";
         }
     }
 

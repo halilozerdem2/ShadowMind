@@ -10,20 +10,29 @@ public class ButtonManager : MonoBehaviour
     public GameObject settingsPanel;
     public GameObject pauseMenu;
 
+    public UIManager uiManager;
+
     //PauseMenuButtonControls
+
+    private void Awake()
+    {
+        uiManager=FindObjectOfType<UIManager>();
+    }
     public void Continue()
     {
-        GameManager.Instance.SetGameState(GameManager.GameState.PlayingMorningScene);
+        GameManager.Instance.PlayGame();
+        uiManager.HidePauseMenu();
+        
     }
     public void OpenControlsPanel()
     {   
         canvasControls.SetActive(true);
-        pauseMenu.SetActive(false);
+        uiManager.HidePauseMenu();
     }
     public void MainMenu()
     {
-        GameManager.Instance.SetGameState(GameManager.GameState.MainMenu);
-        
+      GameManager.Instance.LoadScene("MainMenu");
+      uiManager.HidePauseMenu();   
     }
     public void Settings()
     {
@@ -36,7 +45,6 @@ public class ButtonManager : MonoBehaviour
         Application.Quit();
     }
 
-   //CtonrolPanelButtonControls
    public void BackToPausePanel()
     {
         canvasControls.gameObject.SetActive(false);
