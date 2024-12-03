@@ -5,9 +5,6 @@ public class Inventory : MonoBehaviour
 {
     public static List<Item> items = new List<Item>(); 
 
-    private void Start()
-    {
-    }
     public void AddItem(Item newItem)
     {
         items.Add(newItem);

@@ -17,15 +17,9 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Transform playerCamera;
 
-    private void Awake()
+
+    private void OnEnable()
     {
-        
-         if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
         controller = GetComponent<CharacterController>();
         playerCamera = Camera.main.transform;
     }

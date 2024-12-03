@@ -636,6 +636,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   taskTitle: {fileID: 2172837054235180500}
   taskDescription: {fileID: 3590190760014430016}
+  taskManager: {fileID: 0}
 --- !u!224 &8960017067910742599 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 454893174754664130, guid: 6a8b7340c795fa04a9dfeca5071212c9,

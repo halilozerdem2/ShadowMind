@@ -1,74 +1,65 @@
 using UnityEngine;
+using System.Collections;
 
 public class DoorController : MonoBehaviour
 {
-    [Header("Kapý Ayarlarý")]
-    [SerializeField] private float openSpeed = 2f;       // Kapý açýlma hýzý
-    [SerializeField] private float openAngle = 90f;     // Kapýnýn açýlacaðý z eksenindeki açý
+    [Header("KapÄ± AyarlarÄ±")]
+    [SerializeField] private float openSpeed = 2f;     // KapÄ±nÄ±n aÃ§Ä±lma hÄ±zÄ±
+    [SerializeField] private float openAngle = 90f;   // KapÄ±nÄ±n aÃ§Ä±lma aÃ§Ä±sÄ±
 
-    private Vector3 closedRotation;  // Kapýnýn kapalý pozisyondaki rotasyonu
-    private Vector3 targetRotation;  // Kapýnýn hedef rotasyonu
-    private bool isPlayerNear = false; // Oyuncu kapýya yaklaþtýðýnda kontrol
-    private bool isDoorOpen = false;  // Kapý açýk mý?
+    private Vector3 closedRotation;  // KapÄ±nÄ±n kapalÄ± durumdaki rotasyonu
+    private Vector3 openRotation;    // KapÄ±nÄ±n aÃ§Ä±k durumdaki rotasyonu
+    private bool isPlayerNear = false; 
+    private bool isDoorOpen = false; 
+    private Coroutine doorCoroutine;
 
     private void Start()
     {
-        // Kapýnýn baþlangýçtaki rotasyonunu kaydet
         closedRotation = transform.rotation.eulerAngles;
-
-        // Baþlangýçta kapýyý kapalý pozisyona ayarla
-        targetRotation = closedRotation;
-        transform.rotation = Quaternion.Euler(closedRotation);
-    }
-
-    private void Update()
-    {
-        // Eðer oyuncu kapýya yaklaþtýysa ve kapý kapalýysa aç
-        if (isPlayerNear && !isDoorOpen)
-        {
-            OpenDoor();
-        }
-        // Eðer oyuncu uzaklaþtýysa ve kapý açýksa kapat
-        else if (!isPlayerNear && isDoorOpen)
-        {
-            CloseDoor();
-        }
-
-        // Kapýyý hedef rotasyona doðru hareket ettir
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            Quaternion.Euler(targetRotation),
-            openSpeed * Time.deltaTime * 100f
-        );
-    }
-
-    private void OpenDoor()
-    {
-        // Kapýyý açýk hale getir, sadece z ekseninde deðiþiklik yap
-        targetRotation = new Vector3(closedRotation.x, closedRotation.y, closedRotation.z - openAngle);
-        isDoorOpen = true;
-    }
-
-    private void CloseDoor()
-    {
-        // Kapýyý kapalý hale getir, ilk rotasyona geri dön
-        targetRotation = closedRotation;
-        isDoorOpen = false;
+        openRotation = new Vector3(closedRotation.x, closedRotation.y, closedRotation.z - openAngle);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // Oyuncu kapýya yaklaþýrsa
+        if (other.CompareTag("Player"))
         {
             isPlayerNear = true;
+            if (!isDoorOpen)
+            {
+                if (doorCoroutine != null) StopCoroutine(doorCoroutine);
+                doorCoroutine = StartCoroutine(SmoothRotate(openRotation));
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) // Oyuncu kapýdan uzaklaþýrsa
+        if (other.CompareTag("Player"))
         {
             isPlayerNear = false;
+            if (isDoorOpen)
+            {
+                if (doorCoroutine != null) StopCoroutine(doorCoroutine);
+                doorCoroutine = StartCoroutine(SmoothRotate(closedRotation));
+            }
         }
+    }
+
+    private IEnumerator SmoothRotate(Vector3 targetRotation)
+    {
+        isDoorOpen = targetRotation == openRotation;
+
+        Quaternion startRotation = transform.rotation;
+        Quaternion endRotation = Quaternion.Euler(targetRotation);
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1f)
+        {
+            transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime);
+            elapsedTime += Time.deltaTime * openSpeed;
+            yield return null;
+        }
+
+        transform.rotation = endRotation;
     }
 }

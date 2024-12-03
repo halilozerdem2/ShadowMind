@@ -24,15 +24,12 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         taskManager = GetComponentInChildren<TaskManager>();
         uiManager=GetComponentInChildren<UIManager>();
-        //loader = GetComponent<SceneLoader>();
 
-        // Sahne yüklendiğinde çağrılacak olay abonesi
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Start()
     {
-        uiManager = GetComponentInChildren<UIManager>();
         if (uiManager == null)
         {
             Debug.LogError("UIManager not found in the scene!");
@@ -51,30 +48,30 @@ public class GameManager : MonoBehaviour
         switch (scene.name)
         {
             case "Morning" :
-                //Spawn Character At
+                PlayerSpawner.Instance.DisablePlayer();
+                PlayerSpawner.Instance.SpawnCharacter();
                 PlayGame();
                 Debug.Log("morning");
-                //taskManager = FindAnyObjectByType<TaskManager>(); // Sahne yüklendikten sonra TaskManager'ı bul
                 taskManager.Tasks.Clear();
                 taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynıra at"));
                 
                 break;
             case "Night":
-                //Spawn Character At
+                PlayerSpawner.Instance.DisablePlayer();
+                PlayerSpawner.Instance.SpawnCharacter();
                 PlayGame();
-                //taskManager = FindAnyObjectByType<TaskManager>(); // Sahne yüklendikten sonra TaskManager'ı bul
                 taskManager.Tasks.Clear();
-                taskManager.AddTask(new Task("Antidepresan zamanı", "Evdeki ilaçlarını bul ve Q ya basarak kullan"));
+                taskManager.AddTask(new Task("Antidepresan zamanı", "Evdeki ilacını ve suyu bul ve Q ya basarak kullan"));
                 
                 break;
             case "MainMenu":
-                // Karakteri deaktif et
+                PlayerSpawner.Instance.DisablePlayer();
                 Debug.Log("mainmenu");
                 PauseGame();
                 taskManager.Tasks.Clear();
                 break;
             case "GamOver":
-             // Karakteri deaktif et
+                PlayerSpawner.Instance.DisablePlayer();
                 PauseGame();
                 taskManager.Tasks.Clear();
                 
@@ -88,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         PauseGame();
         uiManager.ShowPauseMenu();
-        
+ 
     }
     
     public void PlayGame()

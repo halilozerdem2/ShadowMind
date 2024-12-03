@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject itemTemplatePrefab; // Hazýrladýðýnýz prefab
+    public GameObject itemTemplatePrefab; // Hazï¿½rladï¿½ï¿½ï¿½nï¿½z prefab
     public Transform contentParent;      // ScrollView Content nesnesi
 
     public void UpdateInventoryUI()
     {
-        // Önce eski öðeleri temizle
+        
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);

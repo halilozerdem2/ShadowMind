@@ -23,6 +23,7 @@ TagManager:
   - bin
   - House
   - Trash
+  - PlayerSpawnPoint
   layers:
   - Default
   - TransparentFX

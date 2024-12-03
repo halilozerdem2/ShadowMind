@@ -48,7 +48,7 @@ public class ButtonManager : MonoBehaviour
    public void BackToPausePanel()
     {
         canvasControls.gameObject.SetActive(false);
-        pauseMenu.SetActive(true);
+        uiManager.ShowPauseMenu();
     }
 
     
