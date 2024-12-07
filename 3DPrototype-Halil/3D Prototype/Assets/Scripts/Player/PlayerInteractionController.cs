@@ -1,7 +1,4 @@
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
-
 public class PlayerInteractionController : MonoBehaviour
 {
     [SerializeField] private Transform playerCameraTransform;
@@ -53,7 +50,7 @@ public class PlayerInteractionController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Bu obje bir envanter itemi deðil!");
+            Debug.LogWarning("Bu obje bir envanter itemi deï¿½il!");
         }
     }
 }

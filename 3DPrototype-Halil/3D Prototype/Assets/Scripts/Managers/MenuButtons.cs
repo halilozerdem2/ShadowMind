@@ -1,9 +1,18 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 public class MenuButtons : MonoBehaviour
 {
-  public void play()
+    SceneLoader sceneLoader;
+    
+    private void Awake()
     {
-        GameManager.Instance.LoadScene("Morning");
-    }    
-}
+      sceneLoader=FindAnyObjectByType<SceneLoader>();
+    }
+
+    public void play()
+    {
+        sceneLoader.LoadSceneByIndex(1);
+    }   
+} 

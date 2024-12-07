@@ -1,41 +1,46 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class TaskUI : MonoBehaviour
 {
-    public TextMeshProUGUI taskTitle;
-    public TextMeshProUGUI taskDescription;
-
     public TaskManager taskManager;
+    public GameObject taskPrefab; 
+    public Transform contentParent; 
 
-    private void Start()
+
+    public void DisplayTasks()
     {
-        taskManager = FindAnyObjectByType<TaskManager>();
+        // Önceki görevleri temizle
+        foreach (Transform child in contentParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Yeni görevleri oluştur
+        foreach (var task in taskManager.Tasks)
+        {
+            GameObject newTask = Instantiate(taskPrefab, contentParent);
+            TaskPrefab taskPrefabScript = newTask.GetComponent<TaskPrefab>();
+            taskPrefabScript.SetupTask(task.TaskName, task.IsCompleted, task.TaskDescription);
+        }
     }
     private void OnEnable()
     {
-       UpdateTaskDisplay();
+        StartCoroutine(DelayedUpdateTaskDisplay());
     }
 
-    public void UpdateTaskDisplay()
+    private IEnumerator DelayedUpdateTaskDisplay()
     {
-        taskManager = FindAnyObjectByType<TaskManager>();
-        
-        Task currentTask = taskManager.GetCurrentTask();
-        if (currentTask != null)
-        {
-            taskTitle.text = currentTask.TaskName;
-            taskDescription.text = currentTask.TaskDescription;
-        }
-        else
-        {
-            taskTitle.text = "Son";
-        }
+        yield return null; // Bir sonraki frame'i bekle
+        DisplayTasks();
     }
-
+   
     public void OnTaskCompleted()
     {
         taskManager.CompleteCurrentTask();
-        UpdateTaskDisplay();
     }
 }

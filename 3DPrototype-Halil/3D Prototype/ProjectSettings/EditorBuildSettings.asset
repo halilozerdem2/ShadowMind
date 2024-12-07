@@ -7,16 +7,13 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
-    guid: 3c5810423c0aa1e4792556ad0f4d71d0
+    guid: be53e38d08636404ca7947cd5f3d00d6
   - enabled: 1
     path: Assets/Scenes/Morning.unity
     guid: c8b521e2b6768314a98e86ea1f2816cf
   - enabled: 1
     path: Assets/Scenes/Night.unity
     guid: cda70cabfa6e8f244835d74fe6fa3b78
-  - enabled: 0
-    path: Assets/Scenes/Polygon.unity
-    guid: e81f570f69951fc44a1c0d0d4ceae7a5
   - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: 17f809fa00426b24f9d925160af754f7

@@ -19,16 +19,24 @@ public class DoorController : MonoBehaviour
         openRotation = new Vector3(closedRotation.x, closedRotation.y, closedRotation.z - openAngle);
     }
 
+    private void Update()
+    {
+        // Oyuncu yakındayken kapıyı aç, uzaklaştığında kapıyı kapat
+        if (isPlayerNear && !isDoorOpen)
+        {
+            OpenDoor();
+        }
+        else if (!isPlayerNear && isDoorOpen)
+        {
+            CloseDoor();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerNear = true;
-            if (!isDoorOpen)
-            {
-                if (doorCoroutine != null) StopCoroutine(doorCoroutine);
-                doorCoroutine = StartCoroutine(SmoothRotate(openRotation));
-            }
+            isPlayerNear = true; // Oyuncu yakında
         }
     }
 
@@ -36,13 +44,20 @@ public class DoorController : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            isPlayerNear = false;
-            if (isDoorOpen)
-            {
-                if (doorCoroutine != null) StopCoroutine(doorCoroutine);
-                doorCoroutine = StartCoroutine(SmoothRotate(closedRotation));
-            }
+            isPlayerNear = false; // Oyuncu uzaklaştı
         }
+    }
+
+    private void OpenDoor()
+    {
+        if (doorCoroutine != null) StopCoroutine(doorCoroutine);
+        doorCoroutine = StartCoroutine(SmoothRotate(openRotation));
+    }
+
+    private void CloseDoor()
+    {
+        if (doorCoroutine != null) StopCoroutine(doorCoroutine);
+        doorCoroutine = StartCoroutine(SmoothRotate(closedRotation));
     }
 
     private IEnumerator SmoothRotate(Vector3 targetRotation)

@@ -1,11 +1,19 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 public class TaskTwoCompleted : MonoBehaviour
-{
-   Inventory Inventory;
-   public bool isTaskCompleted;
+{  
+   public TaskManager taskManager;
 
+   private void OnEnable()
+   {
+      taskManager=FindAnyObjectByType<TaskManager>();
+   }
+   private void OnTriggerEnter(Collider other)
+{
+    if (other.gameObject.tag == "Player")
+    {
+         taskManager.CompleteCurrentTask();
+    }
+}
 
 }

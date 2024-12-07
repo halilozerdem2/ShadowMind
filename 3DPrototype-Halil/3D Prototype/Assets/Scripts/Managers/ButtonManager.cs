@@ -1,8 +1,5 @@
-using NUnit.Framework;
-using System.Collections;
+using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.Android;
-using UnityEngine.SceneManagement;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -11,13 +8,14 @@ public class ButtonManager : MonoBehaviour
     public GameObject pauseMenu;
 
     public UIManager uiManager;
-
-    //PauseMenuButtonControls
+    public SceneLoader sceneLoader;
 
     private void Awake()
     {
-        uiManager=FindObjectOfType<UIManager>();
+        uiManager=FindAnyObjectByType<UIManager>();
+        sceneLoader=FindAnyObjectByType<SceneLoader>();
     }
+  
     public void Continue()
     {
         GameManager.Instance.PlayGame();
@@ -31,7 +29,7 @@ public class ButtonManager : MonoBehaviour
     }
     public void MainMenu()
     {
-      GameManager.Instance.LoadScene("MainMenu");
+      sceneLoader.LoadSceneByIndex(0);
       uiManager.HidePauseMenu();   
     }
     public void Settings()

@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Scripting;
-
 public class UIManager : MonoBehaviour
 {
     [Header("UI Panels")]
@@ -36,6 +34,7 @@ public class UIManager : MonoBehaviour
     {
         if(tasksPanel != null)
         {
+            GameManager.Instance.InfoPanel.SetActive(!GameManager.Instance.InfoPanel.activeSelf);
             bool isActive = tasksPanel.activeSelf;
             tasksPanel.SetActive(!isActive);
         }

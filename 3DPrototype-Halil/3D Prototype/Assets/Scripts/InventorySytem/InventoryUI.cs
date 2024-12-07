@@ -1,16 +1,14 @@
 using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    public GameObject itemTemplatePrefab; // Haz�rlad���n�z prefab
-    public Transform contentParent;      // ScrollView Content nesnesi
+    public GameObject itemTemplatePrefab; 
+    public Transform contentParent;  
 
     public void UpdateInventoryUI()
     {
-        
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);

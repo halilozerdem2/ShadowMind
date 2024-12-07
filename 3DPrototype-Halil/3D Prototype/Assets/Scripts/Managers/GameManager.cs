@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using JetBrains.Annotations;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    private UIManager uiManager;
-    private SceneLoader loader;
-    private bool isEscapeHandled = false;
-    public TaskManager taskManager;
 
-    public Scene currentScene;    
+    [Header("Game Components")]
+    public TaskManager taskManager; 
+    public SceneLoader sceneLoader; 
+    public UIManager uiManager; 
+
+    public GameObject InfoPanel;
+    
     private void Awake()
     {
+        // Singleton kontrolü
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -22,140 +26,82 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        taskManager = GetComponentInChildren<TaskManager>();
-        uiManager=GetComponentInChildren<UIManager>();
 
-        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Referansları al
+        taskManager = GetComponentInChildren<TaskManager>();
+        uiManager = GetComponentInChildren<UIManager>();
+        sceneLoader = GetComponentInChildren<SceneLoader>();
+
+        // SceneLoader'ı başlat
+        sceneLoader.Initialize();
+
     }
 
     private void Start()
     {
+        // UIManager kontrolü
         if (uiManager == null)
         {
             Debug.LogError("UIManager not found in the scene!");
         }
 
+        // InputManager olaylarını bağla
         InputManager.Instance.OnPausePressed += HandlePauseToggle;
         InputManager.Instance.OnTaskPressed += uiManager.ToggleTaskPanel;
         InputManager.Instance.OnInventoryPressed += uiManager.ToggleInventoryPanel;
 
     }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        currentScene = scene;
-        // Sahne yüklendiğinde yapılacak işlemler
-        switch (scene.name)
-        {
-            case "Morning" :
-                PlayerSpawner.Instance.DisablePlayer();
-                PlayerSpawner.Instance.SpawnCharacter();
-                PlayGame();
-                Debug.Log("morning");
-                taskManager.Tasks.Clear();
-                taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynıra at"));
-                
-                break;
-            case "Night":
-                PlayerSpawner.Instance.DisablePlayer();
-                PlayerSpawner.Instance.SpawnCharacter();
-                PlayGame();
-                taskManager.Tasks.Clear();
-                taskManager.AddTask(new Task("Antidepresan zamanı", "Evdeki ilacını ve suyu bul ve Q ya basarak kullan"));
-                
-                break;
-            case "MainMenu":
-                PlayerSpawner.Instance.DisablePlayer();
-                Debug.Log("mainmenu");
-                PauseGame();
-                taskManager.Tasks.Clear();
-                break;
-            case "GamOver":
-                PlayerSpawner.Instance.DisablePlayer();
-                PauseGame();
-                taskManager.Tasks.Clear();
-                
-            break;
-
-        }
-    }
-
-   
-    private void HandlePauseToggle()
-    {
-        PauseGame();
-        uiManager.ShowPauseMenu();
- 
-    }
     
     public void PlayGame()
     {
+        if(InfoPanel!=null)
+            ActivateInfoPanel();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         InputManager.Instance.EnablePlayerInput();
         InputManager.Instance.EnableUIInputs();
         Time.timeScale = 1f;
     }
+
+
     public void PauseGame()
     {
+        if(InfoPanel!=null)
+            DeActivateInfoPanel();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         InputManager.Instance.DisablePlayerInput();
         InputManager.Instance.DisableUIInputs();
         Time.timeScale = 0f;
     }
+
+    private void HandlePauseToggle()
+    {
+        PauseGame();
+        uiManager.ShowPauseMenu();
+    }
+
+    public void DefineMorningTasks()
+    {
+        taskManager.Tasks.Clear();
+        taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynıra at"));
+        taskManager.AddTask(new Task("İlaç kullan", "Üst kattaki yatak odalarından birinde ilaçların var. Bul ve kullan"));
+    }
+
+    public void DefineNightTasks()
+    {
+        taskManager.Tasks.Clear();
+        taskManager.AddTask(new Task("Komşun evde mi?", "Evinin karşısındaki binaya git ve kapıyı çal"));
+    }
     
-
-    private void Update()
+    public void DeActivateInfoPanel()
     {
-        HandleInput();
-        currentScene = SceneManager.GetActiveScene();
+        InfoPanel.SetActive(false);
+    }
+    public void ActivateInfoPanel()
+    {
+        InfoPanel.SetActive(true);
     }
 
-    private void HandleInput()
-    {
-        if (InputManager.Instance.isEscapedPressed)
-        {
-            if (!isEscapeHandled)
-            {
-                isEscapeHandled = true;
-
-                PauseGame();
-                uiManager.ShowPauseMenu();
-            }
-            else
-            {
-                isEscapeHandled = false;
-            }
-        }
-        if (InputManager.Instance.isTButtonPressed)
-            uiManager.ToggleTaskPanel();
-
-        if (InputManager.Instance.isIButtonPressed)
-            uiManager.ToggleInventoryPanel();
-    }
-
-    public void LoadScene(string sceneName)
-    {
-        StartCoroutine(LoadSceneCoroutine(sceneName));
-    }
-    private IEnumerator LoadSceneCoroutine(string sceneName)
-    {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-        asyncLoad.allowSceneActivation = false;
-
-        while (!asyncLoad.isDone)
-        {
-            if (asyncLoad.progress >= 0.9f)
-            {
-                asyncLoad.allowSceneActivation = true;
-            }
-            yield return null;
-        }
-    }
-
-    private void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded; // Sahne yüklendiğinde çağrılan olayı temizle
-    }
 }

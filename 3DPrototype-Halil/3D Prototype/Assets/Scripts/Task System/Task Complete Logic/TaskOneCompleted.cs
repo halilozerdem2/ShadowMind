@@ -3,9 +3,11 @@ using UnityEngine;
 public class TaskOneCompleted : MonoBehaviour
 {
     TaskManager taskManager;
-    private void Awake()
+
+    private void OnEnable()
     {
         taskManager = FindAnyObjectByType<TaskManager>();
+
     }
     private void OnCollisionEnter(Collision collision)
     {

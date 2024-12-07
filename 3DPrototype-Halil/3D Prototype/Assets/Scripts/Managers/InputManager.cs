@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
@@ -54,17 +52,14 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable()
     {
-       if(playerControls!=null)
-            playerControls.Enable();
-        uiControls.Enable();
+        EnablePlayerInput();
+        EnableUIInputs();
     }
 
     private void OnDisable()
     {
-        if(playerControls!=null)
-            playerControls.Disable();
-        if(uiControls!=null)
-            uiControls.Disable();
+        DisableUIInputs();
+        DisablePlayerInput();
     }
 
     public void EnableUIInputs()
@@ -80,8 +75,12 @@ public class InputManager : MonoBehaviour
 
     public void EnablePlayerInput()
     {
-        IsInputEnabled = true;
-        playerControls.Enable();
+        if(playerControls!=null)
+        {
+            IsInputEnabled = true;
+            playerControls.Enable();
+
+        }
     }
 
     public void DisablePlayerInput()
@@ -91,7 +90,8 @@ public class InputManager : MonoBehaviour
         LookInput = Vector2.zero;
         JumpInput = false;
         RunInput = false;
-        playerControls.Disable();
+        if(playerControls!=null)
+            playerControls.Disable();
     }
 
 

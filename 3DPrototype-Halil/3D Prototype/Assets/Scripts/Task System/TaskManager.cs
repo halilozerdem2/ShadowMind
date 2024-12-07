@@ -4,12 +4,14 @@ using UnityEngine.SceneManagement;
 
 public class TaskManager : MonoBehaviour
 {
-    public List<Task> Tasks;
+    public  List<Task> Tasks;
+    public SceneLoader sceneloader;
     private int currentTaskIndex = 0;
 
     private void Awake()
     {
         Tasks = new List<Task>();
+        sceneloader=FindAnyObjectByType<SceneLoader>();
     }
 
     public void AddTask(Task task)
@@ -27,12 +29,14 @@ public class TaskManager : MonoBehaviour
         if (currentTaskIndex < Tasks.Count)
         {
             Tasks[currentTaskIndex].IsCompleted = true;
+
             currentTaskIndex++;
         }
 
         if (currentTaskIndex >= Tasks.Count)
         {
-           GameManager.Instance.LoadScene("Night");
+            currentTaskIndex=0;
+            sceneloader.LoadNextScene();
         }
     }
 }

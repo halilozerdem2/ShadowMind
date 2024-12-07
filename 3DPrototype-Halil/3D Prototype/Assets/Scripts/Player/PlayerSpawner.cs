@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Scripting;
 
 public class PlayerSpawner : MonoBehaviour
 {
@@ -21,7 +19,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void OnDisable()
     {
-        DisablePlayer();
+        ResetPlayer();
     }
 
     public void SpawnCharacter()
@@ -43,7 +41,7 @@ public class PlayerSpawner : MonoBehaviour
     }
 }
 
-    public void DisablePlayer()
+    public void ResetPlayer()
     {
         spawnPosition=null;
         gameObject.SetActive(false);
