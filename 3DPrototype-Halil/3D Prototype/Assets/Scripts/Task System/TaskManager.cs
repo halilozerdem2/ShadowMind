@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +30,6 @@ public class TaskManager : MonoBehaviour
         if (currentTaskIndex < Tasks.Count)
         {
             Tasks[currentTaskIndex].IsCompleted = true;
-
             currentTaskIndex++;
         }
 

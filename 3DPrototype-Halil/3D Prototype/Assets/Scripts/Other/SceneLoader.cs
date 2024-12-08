@@ -5,23 +5,16 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour
 {
     public Scene CurrentScene { get; private set; }
-
-    /// <summary>
-    /// SceneLoader'ın başlatılması için gerekli işlemleri yapar.
-    /// </summary>
     public void Initialize()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         CurrentScene = SceneManager.GetActiveScene();
     }
 
-    /// <summary>
-    /// Sahne yüklendiğinde çağrılan metot.
-    /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        
         CurrentScene = scene;
-
         switch (scene.name)
         {
             case "Morning":
@@ -46,10 +39,6 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Belirtilen sahneyi asenkron olarak yükler.
-    /// </summary>
-    /// <param name="sceneName">Yüklenecek sahnenin adı.</param>
     public void LoadNextScene()
     {
         int currentIndex = SceneManager.GetActiveScene().buildIndex;
@@ -67,10 +56,6 @@ public class SceneLoader : MonoBehaviour
     {
         GameManager.Instance.StartCoroutine(LoadSceneCoroutine(index));
     }
-
-    /// <summary>
-    /// Asenkron sahne yükleme işlemini gerçekleştirir.
-    /// </summary>
      private IEnumerator LoadSceneCoroutine(int sceneIndex)
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneIndex);

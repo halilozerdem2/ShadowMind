@@ -2,11 +2,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class InventoryUI : MonoBehaviour
 {
     public GameObject itemTemplatePrefab; 
-    public Transform contentParent;  
+    public Transform contentParent; 
 
+    void OnEnable()
+    {
+       UpdateInventoryUI();
+
+    }
     public void UpdateInventoryUI()
     {
         foreach (Transform child in contentParent)
@@ -29,11 +35,5 @@ public class InventoryUI : MonoBehaviour
             typeText.text = item.Type;
         }
     }
-
-    private void OnEnable()
-    {
-        UpdateInventoryUI();
-    }
-
 
 }

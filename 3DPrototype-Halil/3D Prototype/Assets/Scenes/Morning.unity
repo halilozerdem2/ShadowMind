@@ -5268,6 +5268,61 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2066873839}
     m_Modifications:
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1152955850954008649, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4801573041243959709, guid: 969b3f6f874ec4177909a4c9a75f264b,
         type: 3}
       propertyPath: taskManager
@@ -5328,6 +5383,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 8695923117931311429, guid: 969b3f6f874ec4177909a4c9a75f264b,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 469410282}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
