@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,7 +18,9 @@ public class AudioManager : MonoBehaviour
     [Header("Scene Music Settings")]
     public List<SceneMusic> sceneMusicList; // Tüm sahnelerin müzik bilgilerini içeren liste
 
-    private AudioSource audioSource; // Müzikleri çalmak için kullanılacak ses kaynağı
+    private AudioSource audioSource;
+    
+    public float currentVolume;
 
     private void Awake()
     {
@@ -33,12 +37,18 @@ public class AudioManager : MonoBehaviour
         }
 
         audioSource = gameObject.AddComponent<AudioSource>(); 
-        audioSource.loop = true; // Müzik sürekli çalacak
+        audioSource.loop = true;
+        audioSource.volume=0.5f;
+        currentVolume=audioSource.volume;
+    }
+    private void Update()
+    {
+        currentVolume=audioSource.volume;
     }
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded; // Sahne yüklendiğinde çağrılacak
+        SceneManager.sceneLoaded += OnSceneLoaded; 
     }
 
     private void OnDisable()
@@ -51,10 +61,6 @@ public class AudioManager : MonoBehaviour
         PlayMusicForScene(scene.name); // Sahne yüklendiğinde müziği çal
     }
 
-    /// <summary>
-    /// Sahne adına göre doğru müziği bul ve çal
-    /// </summary>
-    /// <param name="sceneName">Yüklenen sahnenin adı</param>
     public void PlayMusicForScene(string sceneName)
     {
         // Listede bu sahneye ait müzik bul

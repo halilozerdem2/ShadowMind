@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         taskManager.Tasks.Clear();
         taskManager.AddTask(new Task("Çöp At", "Alt kattaki çöpü bul ve konteynıra at"));
-        //taskManager.AddTask(new Task("İlaç kullan", "Üst kattaki yatak odalarından birinde ilaçların var. Bul ve kullan"));
+        taskManager.AddTask(new Task("İlaç kullan", "Üst kattaki yatak odalarından birinde ilaçların var. Bul ve kullan"));
     }
 
     public void DefineNightTasks()

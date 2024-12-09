@@ -13,7 +13,6 @@ public class SceneLoader : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        
         CurrentScene = scene;
         switch (scene.name)
         {

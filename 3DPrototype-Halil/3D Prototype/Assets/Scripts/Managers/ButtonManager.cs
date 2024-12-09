@@ -1,5 +1,6 @@
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class ButtonManager : MonoBehaviour
 
     public UIManager uiManager;
     public SceneLoader sceneLoader;
+    [SerializeField] Slider musicSlider;
+
 
     private void Awake()
     {
@@ -47,6 +50,11 @@ public class ButtonManager : MonoBehaviour
     {
         canvasControls.gameObject.SetActive(false);
         uiManager.ShowPauseMenu();
+    }
+
+     public void SetMusicVolume()
+    {
+        AudioManager.Instance.SetVolume(musicSlider.value);
     }
 
     
