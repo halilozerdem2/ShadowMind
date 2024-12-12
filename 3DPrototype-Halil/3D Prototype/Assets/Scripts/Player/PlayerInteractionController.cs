@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Scripting;
 public class PlayerInteractionController : MonoBehaviour
 {
     [SerializeField] private Transform playerCameraTransform;
@@ -8,40 +9,14 @@ public class PlayerInteractionController : MonoBehaviour
     private ObjectGrabbable objectGrabbable;
     float InteractionDistance = 3f;
 
-    private void Update()
+    private void Start()
     {
-        if (objectGrabbable == null)
-        {
-            if (InputManager.Instance.returnEButtonValue())
-            {
-                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit raycastHit, InteractionDistance, interactingLayerMask))
-                {
-                    if (raycastHit.transform.TryGetComponent(out objectGrabbable))
-                    {
-                        objectGrabbable.Grab(objectGrapPointTransform);
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (InputManager.Instance.returnQButtonValue())
-            {
-                AddObjectToInventory();
-            }
-
-            if (InputManager.Instance.returnEButtonValue())
-            {
-                objectGrabbable.Drop();
-                objectGrabbable = null;
-
-            }
-        }
+        InputManager.Instance.OnEButtonPressed+=HandleEButton;
+        InputManager.Instance.OnQButtonPressed+=HandleQButton;
     }
 
     private void AddObjectToInventory()
     {
-
         if (objectGrabbable.TryGetComponent(out ItemData itemData))
         {
             Inventory.items.Add(itemData.item);
@@ -50,7 +25,37 @@ public class PlayerInteractionController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Bu obje bir envanter itemi de�il!");
+            Debug.LogWarning("Bu obje bir envanter itemi değil!");
         }
     }
+
+    private void HandleEButton()
+    {
+        if(objectGrabbable==null)
+        {
+                if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, 
+                                    out RaycastHit raycastHit, InteractionDistance, interactingLayerMask))
+                {
+                    if (raycastHit.transform.TryGetComponent(out objectGrabbable))
+                    {
+                        objectGrabbable.Grab(objectGrapPointTransform);
+                    }
+                }
+        }
+        else
+        {
+            objectGrabbable.Drop();
+            objectGrabbable = null;
+        }
+    }
+
+    private void HandleQButton()
+    {
+        if(objectGrabbable!=null)
+        {
+            AddObjectToInventory();
+        }
+
+    }
+
 }

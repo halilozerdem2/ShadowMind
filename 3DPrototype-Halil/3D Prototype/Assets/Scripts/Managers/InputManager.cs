@@ -10,14 +10,15 @@ public class InputManager : MonoBehaviour
     public event System.Action OnPausePressed;
     public event System.Action OnTaskPressed;
     public event System.Action OnInventoryPressed;
+    public event System.Action OnFButtonPressed;
+    public event System.Action OnEButtonPressed;
+    public event System.Action OnQButtonPressed;
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool JumpInput { get; private set; }
     public bool RunInput { get; private set; }
 
-    public bool isEscapedPressed, isIButtonPressed, isTButtonPressed,isEButtonPressed;
-    public bool isInteracting;
     public bool IsInputEnabled { get; private set; } = true;
 
     private void Awake()
@@ -32,6 +33,10 @@ public class InputManager : MonoBehaviour
 
         playerControls = new PlayerControls();
 
+        playerControls.Player.Interact.performed += ctx => OnEButtonPressed?.Invoke();
+        playerControls.Player.Equip.performed += ctx => OnQButtonPressed?.Invoke();
+        playerControls.Player.OpenAndCloseFlashLight.performed += ctx => OnFButtonPressed?.Invoke();
+
         playerControls.Player.Move.performed += ctx => MoveInput = ctx.ReadValue<Vector2>();
         playerControls.Player.Move.canceled += ctx => MoveInput = Vector2.zero;
 
@@ -41,25 +46,15 @@ public class InputManager : MonoBehaviour
         playerControls.Player.Run.performed += ctx => RunInput = true;
         playerControls.Player.Run.canceled += ctx => RunInput = false;
 
-
         uiControls = new UIControls();
 
         uiControls.UI.PauseGame.performed += ctx => OnPausePressed?.Invoke();
         uiControls.UI.OpenTasksPanel.performed += ctx => OnTaskPressed?.Invoke();
         uiControls.UI.OpenInventoryPanel.performed += ctx => OnInventoryPressed?.Invoke();
 
-    }
-
-    private void OnEnable()
-    {
         EnablePlayerInput();
         EnableUIInputs();
-    }
 
-    private void OnDisable()
-    {
-        DisableUIInputs();
-        DisablePlayerInput();
     }
 
     public void EnableUIInputs()
@@ -79,7 +74,6 @@ public class InputManager : MonoBehaviour
         {
             IsInputEnabled = true;
             playerControls.Enable();
-
         }
     }
 

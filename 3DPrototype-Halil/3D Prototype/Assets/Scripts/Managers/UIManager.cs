@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
     {
         if(tasksPanel != null)
         {
-            GameManager.Instance.InfoPanel.SetActive(!GameManager.Instance.InfoPanel.activeSelf);
+            GameManager.Instance.InfoPanel.gameObject.SetActive(!GameManager.Instance.InfoPanel.gameObject.activeSelf);
             bool isActive = tasksPanel.activeSelf;
             tasksPanel.SetActive(!isActive);
         }
@@ -48,5 +48,6 @@ public class UIManager : MonoBehaviour
             inventoryPanel.SetActive(!isActive);
         }
     }
+
 
 }

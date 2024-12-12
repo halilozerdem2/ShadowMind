@@ -4,9 +4,9 @@ using System.Collections;
 
 public class TaskUI : MonoBehaviour
 {
-    public TaskManager taskManager; // TaskManager referansı
-    public GameObject taskPrefab; // Görev için kullanılacak prefab
-    public Transform contentParent; // Görevlerin yerleştirileceği parent
+    public TaskManager taskManager;
+    public GameObject taskPrefab; 
+    public Transform contentParent; 
 
     private void OnEnable()
     {

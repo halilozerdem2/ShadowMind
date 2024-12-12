@@ -1,8 +1,10 @@
 using JetBrains.Annotations;
+using Mono.Cecil.Cil;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class GameManager : MonoBehaviour
     public TaskManager taskManager; 
     public SceneLoader sceneLoader; 
     public UIManager uiManager; 
-    public GameObject InfoPanel;
+    public InfoManager InfoPanel;
     
     private void Awake()
     {
@@ -96,11 +98,12 @@ public class GameManager : MonoBehaviour
     
     public void DeActivateInfoPanel()
     {
-        InfoPanel.SetActive(false);
+        InfoPanel.gameObject.SetActive(false);
     }
     public void ActivateInfoPanel()
     {
-        InfoPanel.SetActive(true);
+        InfoPanel.gameObject.SetActive(true);
+        //InfoPanel.InformPlayer();
     }
 
 }

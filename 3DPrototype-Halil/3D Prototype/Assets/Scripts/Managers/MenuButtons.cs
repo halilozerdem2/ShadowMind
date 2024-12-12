@@ -12,7 +12,6 @@ public class MenuButtons : MonoBehaviour
     private void Awake()
     {
       sceneLoader=FindAnyObjectByType<SceneLoader>();
-      musicSlider=FindObjectOfType<Slider>();
     }
 
 

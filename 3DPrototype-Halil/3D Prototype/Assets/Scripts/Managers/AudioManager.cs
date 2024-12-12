@@ -24,11 +24,10 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton yapısı
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Sahne değiştiğinde objeyi yok etme
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -46,28 +45,12 @@ public class AudioManager : MonoBehaviour
         currentVolume=audioSource.volume;
     }
 
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded; 
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded; // Abonelikten çık
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        PlayMusicForScene(scene.name); // Sahne yüklendiğinde müziği çal
-    }
-
     public void PlayMusicForScene(string sceneName)
     {
-        // Listede bu sahneye ait müzik bul
         SceneMusic sceneMusic = sceneMusicList.Find(music => music.sceneName == sceneName);
         if (sceneMusic != null && sceneMusic.musicClip != null)
         {
-            if (audioSource.clip != sceneMusic.musicClip) // Zaten çalınan müzikle aynı değilse
+            if (audioSource.clip != sceneMusic.musicClip)
             {
                 audioSource.clip = sceneMusic.musicClip;
                 audioSource.Play();
@@ -76,40 +59,26 @@ public class AudioManager : MonoBehaviour
         else
         {
             Debug.LogWarning($"Bu sahne ({sceneName}) için atanmış bir müzik bulunamadı!");
-            audioSource.Stop(); // Sahneye özel müzik yoksa müziği durdur
+            audioSource.Stop();
         }
     }
 
-    /// <summary>
-    /// Mevcut çalan müziği durdur
-    /// </summary>
+
     public void StopMusic()
     {
         audioSource.Stop();
     }
-
-    /// <summary>
-    /// Mevcut çalan müziği geçici olarak duraklat
-    /// </summary>
     public void PauseMusic()
     {
         audioSource.Pause();
     }
 
-    /// <summary>
-    /// Duraklatılan müziği devam ettir
-    /// </summary>
     public void ResumeMusic()
     {
         audioSource.UnPause();
     }
-
-    /// <summary>
-    /// Müziğin ses seviyesini ayarla
-    /// </summary>
-    /// <param name="volume">0 ile 1 arasında bir ses seviyesi</param>
     public void SetVolume(float volume)
     {
-        audioSource.volume = Mathf.Clamp01(volume); // Ses 0-1 arasında kalacak şekilde sınırla
+        audioSource.volume = Mathf.Clamp01(volume); 
     }
 }

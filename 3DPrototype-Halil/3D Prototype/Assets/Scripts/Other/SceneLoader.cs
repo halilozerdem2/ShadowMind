@@ -14,6 +14,7 @@ public class SceneLoader : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         CurrentScene = scene;
+        AudioManager.Instance.PlayMusicForScene(scene.name);
         switch (scene.name)
         {
             case "Morning":

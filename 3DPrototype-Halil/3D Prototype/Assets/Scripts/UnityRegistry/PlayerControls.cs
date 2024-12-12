@@ -62,6 +62,33 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""0218a9ea-1e15-4ab3-a080-5ea1e87961d4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Equip"",
+                    ""type"": ""Button"",
+                    ""id"": ""2a919392-c549-4937-88f6-8749a36948e7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenAndCloseFlashLight"",
+                    ""type"": ""Button"",
+                    ""id"": ""3eee5f0c-ca18-4af6-a978-5cdfbd359f3c"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +179,39 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e86f9fb2-2a8e-426a-a691-e1bae375b99c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5a79c50-d5e4-4ed4-82b2-a561151901df"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""Equip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""857de291-ecda-44bc-9fb1-7bad876d1c93"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard/Mouse"",
+                    ""action"": ""OpenAndCloseFlashLight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -238,6 +298,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_Equip = m_Player.FindAction("Equip", throwIfNotFound: true);
+        m_Player_OpenAndCloseFlashLight = m_Player.FindAction("OpenAndCloseFlashLight", throwIfNotFound: true);
         // UIControls
         m_UIControls = asset.FindActionMap("UIControls", throwIfNotFound: true);
         m_UIControls_PauseGame = m_UIControls.FindAction("Pause Game", throwIfNotFound: true);
@@ -314,6 +377,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Run;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_Equip;
+    private readonly InputAction m_Player_OpenAndCloseFlashLight;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -322,6 +388,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Run => m_Wrapper.m_Player_Run;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @Equip => m_Wrapper.m_Player_Equip;
+        public InputAction @OpenAndCloseFlashLight => m_Wrapper.m_Player_OpenAndCloseFlashLight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -343,6 +412,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
+            @Equip.started += instance.OnEquip;
+            @Equip.performed += instance.OnEquip;
+            @Equip.canceled += instance.OnEquip;
+            @OpenAndCloseFlashLight.started += instance.OnOpenAndCloseFlashLight;
+            @OpenAndCloseFlashLight.performed += instance.OnOpenAndCloseFlashLight;
+            @OpenAndCloseFlashLight.canceled += instance.OnOpenAndCloseFlashLight;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -359,6 +437,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
+            @Equip.started -= instance.OnEquip;
+            @Equip.performed -= instance.OnEquip;
+            @Equip.canceled -= instance.OnEquip;
+            @OpenAndCloseFlashLight.started -= instance.OnOpenAndCloseFlashLight;
+            @OpenAndCloseFlashLight.performed -= instance.OnOpenAndCloseFlashLight;
+            @OpenAndCloseFlashLight.canceled -= instance.OnOpenAndCloseFlashLight;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -453,6 +540,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnEquip(InputAction.CallbackContext context);
+        void OnOpenAndCloseFlashLight(InputAction.CallbackContext context);
     }
     public interface IUIControlsActions
     {
