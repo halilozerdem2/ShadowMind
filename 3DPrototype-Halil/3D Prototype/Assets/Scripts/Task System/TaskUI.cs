@@ -10,7 +10,6 @@ public class TaskUI : MonoBehaviour
 
     private void OnEnable()
     {
-
         StartCoroutine(DelayedUpdateTaskDisplay());
     }
 
